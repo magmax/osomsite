@@ -12,6 +12,10 @@ angular.module('siteApp', [
         templateUrl: 'views/main.html',
         controller: 'MainCtrl'
       })
+      .when('/posts', {
+        templateUrl: 'views/post_list.html',
+        controller: 'MainCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
