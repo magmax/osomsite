@@ -2,7 +2,7 @@
 
 angular.module('siteApp')
   .controller('PostListCtrl', function ($scope) {
-    $scope.awesomeThings = [
+    $scope.posts = [
       'HTML5 Boilerplate',
       'AngularJS',
       'Karma'
