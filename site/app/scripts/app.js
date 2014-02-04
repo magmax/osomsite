@@ -16,6 +16,10 @@ angular.module('siteApp', [
         templateUrl: 'views/post_list.html',
         controller: 'MainCtrl'
       })
+      .when('/contact', {
+        templateUrl: 'views/contact.html',
+        controller: 'MainCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
