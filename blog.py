@@ -8,7 +8,7 @@ import subprocess
 import csv
 
 DIRECTORY = '/home/miguel/proyectos/web/_private/posts'
-DIRECTORY = 'example'
+#DIRECTORY = 'example'
 
 
 def stat_time_loader(filename):
@@ -102,9 +102,9 @@ def main():
     inverse_file = InverseFile()
     inverse_file.add(properties)
 
-    index_generator = CsvFilesGenerator(['.filename', '.time', 'title'], 'output')
+    index_generator = CsvFilesGenerator(['.filename', '.time', 'title'], 'site/app/index')
 
-    pprint.pprint(inverse_file.inverse)
+#    pprint.pprint(inverse_file.inverse)
     index_generator.generate(inverse_file.inverse)
 
 if __name__ == '__main__':
