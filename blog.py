@@ -5,6 +5,7 @@ import os
 import yaml
 import pprint
 import subprocess
+import csv
 
 DIRECTORY = '/home/miguel/proyectos/web/_private/posts'
 DIRECTORY = 'example'
@@ -14,10 +15,10 @@ def stat_time_loader(filename):
     return os.stat(filename).st_atime
 
 def git_time_loader(filename):
+    # proof of concept. It doesn't works
     name = os.path.basename(filename)
     path = os.path.dirname(filename)
     cmd = 'git log -n1 --pretty=format:"%%at" -- %s' % name
-    print path, '>', cmd
     return subprocess.check_output(cmd, cwd=path)
 
 def os_filename_loader(filename):
@@ -67,25 +68,44 @@ class InverseFile(object):
         self.inverse[key][value].append(data)
 
 
-class IndexFilesGenerator(object):
-    def __init__(self, output_path='output'):
+class CsvFilesGenerator(object):
+    def __init__(self, keys=[], output_path='output'):
         self.output_path = output_path
+        self.keys = keys
 
-    def generate(self, inverse_file, index_name):
-        for key, properties in inverse_file:
-            pass
+    def generate(self, inverse_file):
+        for category, properties in inverse_file.items():
+            index_path = os.path.join(self.output_path, category)
+            if not os.path.exists(index_path):
+                os.makedirs(index_path)
+            for category_value, items in properties.items():
+                output_file = os.path.join(index_path, category_value)
+                with file(output_file, 'w+') as fd:
+                    csvwriter = csv.writer(fd)
+                    for item in items:
+                        row = []
+                        for key in self.keys:
+                            row.append(item.get(key, ''))
+                        csvwriter.writerow(row)
+
 
 def main():
     data_loaders = {
         '.filename': os_filename_loader,
-        '.time': git_time_loader,
+        '.time': stat_time_loader,
+        '.author': lambda x:'magmax',
         }
 
     prop_reader = PropertyReader(data_loaders)
-    inverse_file = InverseFile()
     properties = list(prop_reader.read_files(DIRECTORY))
+
+    inverse_file = InverseFile()
     inverse_file.add(properties)
+
+    index_generator = CsvFilesGenerator(['.filename', '.time', 'title'], 'output')
+
     pprint.pprint(inverse_file.inverse)
+    index_generator.generate(inverse_file.inverse)
 
 if __name__ == '__main__':
     main()
