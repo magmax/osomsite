@@ -14,7 +14,7 @@ angular.module('siteApp', [
       })
       .when('/posts', {
         templateUrl: 'views/post_list.html',
-        controller: 'MainCtrl'
+        controller: 'PostListCtrl'
       })
       .when('/contact', {
         templateUrl: 'views/contact.html',
