@@ -88,7 +88,6 @@ class CsvFilesGenerator(object):
                             row.append(item.get(key, ''))
                         csvwriter.writerow(row)
 
-
 def main():
     data_loaders = {
         '.filename': os_filename_loader,
