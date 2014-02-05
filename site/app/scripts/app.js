@@ -16,6 +16,10 @@ angular.module('siteApp', [
         templateUrl: 'views/post_list.html',
         controller: 'PostListCtrl'
       })
+      .when('/post', {
+        templateUrl: 'views/post.html',
+        controller: 'PostCtrl'
+      })
       .when('/contact', {
         templateUrl: 'views/contact.html',
         controller: 'MainCtrl'

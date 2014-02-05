@@ -6,7 +6,7 @@ angular.module('siteApp')
     function ($scope, FileRetriever) {
       function init() {
         FileRetriever.fetch('posts').then(function(posts) {
-          $scope.posts = posts.split('\n');
+          $scope.posts = posts;
         });
       }
 
