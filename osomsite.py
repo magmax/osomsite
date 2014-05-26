@@ -3,12 +3,20 @@
 
 import os
 import yaml
+import json
 import pprint
 import subprocess
 import csv
+import logging
 
-DIRECTORY = '/home/miguel/proyectos/web/_private/posts'
-#DIRECTORY = 'example'
+logging.basicConfig(
+    level=logging.DEBUG,
+    )
+logger = logging.getLogger(__name__)
+
+
+#DIRECTORY = '/home/miguel/proyectos/web/_private/posts'
+DIRECTORY = 'example'
 
 
 def stat_time_loader(filename):
@@ -45,6 +53,23 @@ class PropertyReader(object):
                 yield self.read_file(os.path.join(root, filename))
 
 
+class IndexGenerator(object):
+    def __init__(self, keys=[], output_path='output'):
+        self._keys = keys
+        self._output_path = output_path
+
+    def generate(self, inverse_file):
+        try:
+            os.makedirs(self._output_path)
+        except OSError:
+            pass
+
+        for category, properties in inverse_file.items():
+            output_file = os.path.join(self._output_path, category)
+            logger.info('Generating file %s', output_file)
+            with file(output_file, 'w+') as fd:
+                json.dump(properties, fd)
+
 class InverseFile(object):
     def __init__(self):
         self.inverse = {}
@@ -67,27 +92,6 @@ class InverseFile(object):
             self.inverse[key][value] = []
         self.inverse[key][value].append(data)
 
-
-class CsvFilesGenerator(object):
-    def __init__(self, keys=[], output_path='output'):
-        self.output_path = output_path
-        self.keys = keys
-
-    def generate(self, inverse_file):
-        for category, properties in inverse_file.items():
-            index_path = os.path.join(self.output_path, category)
-            if not os.path.exists(index_path):
-                os.makedirs(index_path)
-            for category_value, items in properties.items():
-                output_file = os.path.join(index_path, category_value)
-                with file(output_file, 'w+') as fd:
-                    csvwriter = csv.writer(fd)
-                    for item in items:
-                        row = []
-                        for key in self.keys:
-                            row.append(item.get(key, ''))
-                        csvwriter.writerow(row)
-
 def main():
     data_loaders = {
         '.filename': os_filename_loader,
@@ -101,10 +105,9 @@ def main():
     inverse_file = InverseFile()
     inverse_file.add(properties)
 
-    index_generator = CsvFilesGenerator(['.filename', '.time', 'title'], 'site/app/index')
-
-#    pprint.pprint(inverse_file.inverse)
+    index_generator = IndexGenerator(['.filename', '.time', 'title'], 'site/app/index')
     index_generator.generate(inverse_file.inverse)
+
 
 if __name__ == '__main__':
     main()
