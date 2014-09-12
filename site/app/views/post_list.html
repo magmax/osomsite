@@ -1,6 +1,20 @@
 <h1>Post lists</h1>
 
 
-<ul class="" ng-repeat="post in posts">
-  <li><a href="/post/{{ post[0]['.filename'] }}">{{ post[0].title }}</a></li>
-</ul>
+<div class="row" ng-repeat="post in posts">
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <h3 class="panel-title">{{ post[0].title }} <small>{{ post[0]._time*1000 | date }}</small></h3>
+    </div>
+    <div class="panel-body">
+      <dl class="dl-horizontal">
+        <dt>Author:</dt>
+        <dd>{{ post[0]._author }}</dd>
+        <dt>Tags:</dt>
+        <dd>{{ post[0].tags.join(', ') }}</dd>
+        <dt>Description:</dt>
+        <dd>{{ post[0].description }}</dd>
+      </dl>
+    </div>
+  </div>
+</div>

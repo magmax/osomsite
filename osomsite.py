@@ -11,6 +11,8 @@ import logging
 
 logging.basicConfig(
     level=logging.DEBUG,
+    format='[%(asctime)-15s] %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
     )
 logger = logging.getLogger(__name__)
 
@@ -41,6 +43,7 @@ class PropertyReader(object):
         self._data_loaders = data_loaders if data_loaders else {}
 
     def read_file(self, filename):
+        logger.info('Reading file %s', filename)
         with file(filename) as fd:
             properties = yaml.safe_load_all(fd).next()
             for key, loader in self._data_loaders.items():
@@ -65,10 +68,10 @@ class IndexGenerator(object):
             pass
 
         for category, properties in inverse_file.items():
-            output_file = os.path.join(self._output_path, category)
+            output_file = os.path.join(self._output_path, category) + '.json'
             logger.info('Generating file %s', output_file)
             with file(output_file, 'w+') as fd:
-                json.dump(properties, fd)
+                json.dump(properties, fd, indent=2)
 
 class InverseFile(object):
     def __init__(self):
@@ -92,11 +95,12 @@ class InverseFile(object):
             self.inverse[key][value] = []
         self.inverse[key][value].append(data)
 
+
 def main():
     data_loaders = {
-        '.filename': os_filename_loader,
-        '.time': stat_time_loader,
-        '.author': lambda x:'magmax',
+        '_filename': os_filename_loader,
+        '_time': stat_time_loader,
+        '_author': lambda x:'magmax',
         }
 
     prop_reader = PropertyReader(data_loaders)

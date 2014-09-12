@@ -5,7 +5,7 @@ angular.module('siteApp')
     '$scope', 'FileRetriever',
     function ($scope, FileRetriever) {
       function init() {
-        FileRetriever.fetch('title').then(function(posts) {
+        FileRetriever.fetch('title.json').then(function(posts) {
           $scope.posts = posts;
         });
       }
