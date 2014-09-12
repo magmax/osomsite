@@ -36,8 +36,8 @@ To be done:
 - Download the Javascript dependencies. Just enter in **"site"** directory and execute `bower install`. You can install [bower] with [npm].
 - Configure any web server to serve **"site/app"**. The easiest way is to enter in that directory and execute one of these::
 
-    python -m http.server      # for python 3.X
-    python -m SimpleHTTPServer # for python 2.X
+    python -m http.server 8080      # for python 3.X
+    python -m SimpleHTTPServer 8080 # for python 2.X
 
 Now you can see your site in http://localhost:8080
 
