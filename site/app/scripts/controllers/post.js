@@ -3,10 +3,10 @@
 angular.module('siteApp')
   .controller('PostCtrl', [
     function ($scope) {
-    '$scope', 'FileRetriever',
-    function ($scope, FileRetriever) {
+    '$scope', '$routeParams', 'FileRetriever',
+    function ($scope, $routeParams, FileRetriever) {
       function init() {
-        FileRetriever.fetch('/post/example1.md').then(function(post) {
+        FileRetriever.fetch('/post/' + $routeParams.filename).then(function(post) {
           $scope.html = post;
         });
       }

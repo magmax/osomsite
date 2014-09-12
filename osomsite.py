@@ -17,8 +17,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-#DIRECTORY = '/home/miguel/proyectos/web/_private/posts'
-DIRECTORY = 'example'
+DIRECTORY = 'site/app/post'
 
 
 def stat_time_loader(filename):

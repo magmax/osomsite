@@ -16,7 +16,7 @@ angular.module('siteApp', [
         templateUrl: 'views/post_list.html',
         controller: 'PostListCtrl'
       })
-      .when('/post', {
+      .when('/post/:filename', {
         templateUrl: 'views/post.html',
         controller: 'PostCtrl'
       })
